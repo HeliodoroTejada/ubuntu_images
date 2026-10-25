@@ -2,15 +2,15 @@ FROM ros:humble-ros-base-jammy
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG USERNAME=helio
+ARG USERNAME=user
 ARG USER_UID=1000
 ARG USER_GID=1000
 
 USER root
 
+# Herramientas comunes a ambas imagenes.
 RUN apt-get update && apt-get install -y \
     sudo \
-    ros-humble-desktop \
     python3-pip \
     cmake \
     curl \
@@ -23,6 +23,11 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     net-tools \
     usbutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Paquetes especificos de ROS Humble.
+RUN apt-get update && apt-get install -y \
+    ros-humble-desktop \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid ${USER_GID} ${USERNAME} \

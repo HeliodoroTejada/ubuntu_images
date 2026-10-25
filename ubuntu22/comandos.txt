@@ -1,3 +1,4 @@
+HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose up -d --build
 docker start ubuntu22_humble
 docker exec -it ubuntu22_humble bash
 

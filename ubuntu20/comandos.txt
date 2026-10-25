@@ -5,5 +5,3 @@ docker start ubuntu20_foxy	==> Arrancar contenedor
 docker stop ubuntu20_foxy	==> Parar contenedor
 
 docker exec -it ubuntu20_foxy bash	==> Abrir terminal (ROS 2 Foxy se carga automáticamente)
-
-

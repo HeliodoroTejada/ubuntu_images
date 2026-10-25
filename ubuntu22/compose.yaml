@@ -13,12 +13,9 @@ services:
 
     network_mode: host
 
-    devices:
-      - /dev/dri:/dev/dri
-
-    group_add:
-      - "44"
-      - "990"
+    # Con red host, Docker no añade automáticamente el hostname a /etc/hosts.
+    extra_hosts:
+      - "ubuntu22-humble:127.0.0.1"
 
     stdin_open: true
     tty: true
@@ -26,19 +23,16 @@ services:
 
     environment:
       - DISPLAY=${DISPLAY}
-      - XAUTHORITY=/tmp/.Xauthority
       - QT_X11_NO_MITSHM=1
-      - GZ_IP=127.0.0.1
-      - QT_QPA_PLATFORM=xcb
-      - QT_XCB_GL_INTEGRATION=xcb_glx
-      - MESA_LOADER_DRIVER_OVERRIDE=zink
+      - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - ROS_LOCALHOST_ONLY=${ROS_LOCALHOST_ONLY:-1}
+      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
 
     volumes:
-      - ./carpeta_compartida:/home/helio/carpeta_compartida
+      - ./carpeta_compartida:/home/user/carpeta_compartida
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      # Kept as a regular file and refreshed by ubuntu22-humble-xauthority.service.
-      - /run/user/${HOST_UID:-1000}/.mutter-Xwaylandauth.WLL0W3:/tmp/.Xauthority:ro
 
-    working_dir: /home/helio/carpeta_compartida
+    working_dir: /home/user/carpeta_compartida
 
     command: sleep infinity
