@@ -1,0 +1,12 @@
+[Unit]
+Description=Keep Xauthority ready for the persistent ubuntu22_humble container
+After=basic.target
+
+[Service]
+Type=simple
+ExecStart=/home/helio/ubuntu_images/ubuntu22/scripts/refresh-ubuntu22-xauthority.sh --watch
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

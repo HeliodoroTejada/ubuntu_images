@@ -1,0 +1,4 @@
+docker start ubuntu22_humble
+docker exec -it ubuntu22_humble bash
+
+docker stop ubuntu22_humble

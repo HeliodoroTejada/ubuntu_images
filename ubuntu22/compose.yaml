@@ -1,0 +1,44 @@
+services:
+  ubuntu22:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_UID: ${HOST_UID:-1000}
+        USER_GID: ${HOST_GID:-1000}
+
+    image: miera-ubuntu22-humble:working
+    container_name: ubuntu22_humble
+    hostname: ubuntu22-humble
+
+    network_mode: host
+
+    devices:
+      - /dev/dri:/dev/dri
+
+    group_add:
+      - "44"
+      - "990"
+
+    stdin_open: true
+    tty: true
+    init: true
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/tmp/.Xauthority
+      - QT_X11_NO_MITSHM=1
+      - GZ_IP=127.0.0.1
+      - QT_QPA_PLATFORM=xcb
+      - QT_XCB_GL_INTEGRATION=xcb_glx
+      - MESA_LOADER_DRIVER_OVERRIDE=zink
+
+    volumes:
+      - ./carpeta_compartida:/home/helio/carpeta_compartida
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Kept as a regular file and refreshed by ubuntu22-humble-xauthority.service.
+      - /run/user/${HOST_UID:-1000}/.mutter-Xwaylandauth.WLL0W3:/tmp/.Xauthority:ro
+
+    working_dir: /home/helio/carpeta_compartida
+
+    command: sleep infinity
